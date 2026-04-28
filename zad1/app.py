@@ -46,7 +46,8 @@ def main():
 
         return redirect(url_for('main'))
 
-    return render_template('index.html')
+    users = User.query.all()
+    return render_template('index.html', users=users)
 
 
 if __name__ == "__main__":
