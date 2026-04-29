@@ -3,28 +3,23 @@ import { check } from 'k6';
 
 export const options = {
   stages: [
-    { duration: '1m', target: 40 },  // 1. RAMP-UP: Powolne wejście do 40 użytkowników
-    { duration: '3m', target: 40 },  // 2. PLATEAU: Utrzymanie 40 osób przez 3 minuty
-    { duration: '30s', target: 0 },  // 3. RAMP-DOWN: Spokojne wygaszanie ruchu
+    { duration: '1m', target: 40 },  
+    { duration: '3m', target: 40 },
+    { duration: '30s', target: 0 },
   ],
 };
 
 export default function () {
   const url = 'http://134.112.40.231/';
 
-  const payload = JSON.stringify({
-    name: 'Test',
-    surname: 'User'
-  });
-
   const params = {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    redirects: 0, // nie podążaj za redirectem, mierz tylko /submit
   };
 
   const res = http.post(url, { name: 'Stress', surname: 'Test' }, params);
 
   check(res, {
-    'is status 200': (r) => r.status === 200,
+    'is status 303': (r) => r.status === 302, // dla flask 302 dla fastapi 200
   });
-
 }

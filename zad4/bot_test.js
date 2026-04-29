@@ -10,16 +10,21 @@ export const options = {
 };
 
 export default function () {
-  const url = 'http://134.112.40.231/';
+  const url = 'http://134.112.40.231/submit';
 
   const params = {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    redirects: 0, // nie podążaj za redirectem, mierz tylko /submit
+    redirects: 0,
   };
 
-  const res = http.post(url, { name: 'Stress', surname: 'Test' }, params);
+  // Symulacja bota — wypełnia również pole honeypot
+  const res = http.post(url, {
+    name: 'Bot',
+    surname: 'Attack',
+    website: 'http://spam.com'  // honeypot wypełniony
+  }, params);
 
   check(res, {
-    'is status 303': (r) => r.status === 302, // dla flask 302 dla fastapi 200
+    'is status 303': (r) => r.status === 303,
   });
 }
