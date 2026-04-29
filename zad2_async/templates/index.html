@@ -2,23 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Task 1 async</title>
+    <title>Task 2 sync</title>
 </head>
 <body>
 
-    {% for message in get_flashed_messages() %}
-        <p style="color: blue;"><strong>{{ message }}</strong></p>
-    {% endfor %}
+    {% if error %}
+    <p style="color: red;"><strong>Error: {{ error }}</strong></p>
+    {% endif %}
 
-    <form action="/" method="POST">
+    {% if success %}
+    <p style="color: green;"><strong>Success: {{ success }}</strong></p>
+    {% endif %}
+
+    <form action="/submit" method="POST">
         <div>
             <label>Name:</label>
-            <input type="text" name="name" required>
+            <input type="text" name="name" value="{{ old_name if old_name else '' }}" required>
         </div>
         <br>
         <div>
             <label>Surname:</label>
-            <input type="text" name="surname" required>
+            <input type="text" name="surname" value="{{ old_surname if old_surname else '' }}" required>
         </div>
         <br>
         <button type="submit">Submit</button>
